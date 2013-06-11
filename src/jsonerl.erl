@@ -100,6 +100,10 @@ json_encode(Array, State) when is_list(Array) ->
     json_encode_array(Array, State);
 json_encode(Tuples, State) when is_tuple(Tuples) ->
     json_encode_proplist(Tuples, State);
+json_encode(Pid, State) when is_pid(Pid) ->
+  json_encode(list_to_binary(pid_to_list(Pid)), State);
+json_encode(Port, State) when is_port(Port) ->
+  json_encode(list_to_binary(port_to_list(Port)), State);
 json_encode(Bad, #encoder{handler=null}) ->
     exit({json_encode, {bad_term, Bad}});
 json_encode(Bad, State=#encoder{handler=Handler}) ->
